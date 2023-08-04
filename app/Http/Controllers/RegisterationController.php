@@ -115,11 +115,16 @@ class RegisterationController extends Controller
 
         if (!empty($updateMessages)) {
             $user->save();
+            return response()->json([
+                'message' => $updateMessages,
+            ]);
+        }else{
+            return response()->json([
+                'message' => 'Nothing updated',
+            ]);
         }
 
-        return response()->json([
-            'message' => $updateMessages,
-        ]);
+        
     }
 
 
