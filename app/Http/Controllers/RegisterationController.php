@@ -76,6 +76,7 @@ class RegisterationController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $error=[];
         $validator = Validator::make($request->all(), [
             'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'name' => 'string|max:255',
@@ -83,7 +84,8 @@ class RegisterationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors())->setStatusCode(422);
+            $error = response()->json($validator->errors())->setStatusCode(422);
+            return $error;
         }
 
         $user = User::find($id);
@@ -106,21 +108,26 @@ class RegisterationController extends Controller
         if ($request->has('name')) {
             $user->name = $request->input('name');
             $updateMessages[] = 'Name updated';
+        }else if(!$request->has('name')){
+            $error[] = 'Set the (name) as a key';
         }
 
         if ($request->has('MobileNumber')) {
             $user->MobileNumber = $request->input('MobileNumber');
             $updateMessages[] = 'Mobile Number updated';
+        }else if(!$request->has('MobileNumber')){
+            $error[] = 'Set the (MobileNumber) as a key';
         }
 
         if (!empty($updateMessages)) {
             $user->save();
             return response()->json([
                 'message' => $updateMessages,
+                'error' =>  $error
             ]);
-        }else{
+        }else if(!empty($error)){
             return response()->json([
-                'message' => 'Update failed'.$request->errors()
+                'message' => $error
             ]);
         }
 
