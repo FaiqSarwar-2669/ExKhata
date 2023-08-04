@@ -120,7 +120,7 @@ class RegisterationController extends Controller
             ]);
         }else{
             return response()->json([
-                'message' => 'Nothing updated',
+                'message' => 'Update failed'.$request->errors()
             ]);
         }
 
