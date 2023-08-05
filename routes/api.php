@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterationController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,8 @@ use App\Http\Controllers\LoginController;
 
 Route::post('/user', [RegisterationController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
+Route::post('/forgotPassword', [ForgotPasswordController::class,'sendResetLink']);
+
 
 
 Route::middleware('auth:sanctum')->group(function () {
