@@ -32,25 +32,35 @@ class RegisterationController extends Controller
      */
     public function store(Request $request)
     {
+        $error=[];
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'password' => 'required',
             'name' => 'required|string|max:255',
             'mob' => 'required|nullable|digits:11'
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors())->setStatusCode(422);
+            return response()->json(['message' => $validator->errors()])->setStatusCode(422);
         }else{
-            $data = [
-                'email' => $request->input('email'),
-                'password' => bcrypt($request->input('password')), 
-                'name' => $request->input('name'), 
-                'MobileNumber' => $request->input('mob'), 
-            ];
-            DB::table('users')->insert($data);
-            return response()->json([
-                'message' => 'Successfully Registerd'
-            ]);
+            $user = User::where('email', $request->email)->first();
+            if($user){
+                return response()->json([
+                    'message' => 'This email has already been taken'
+                ]);
+            }
+            else{
+                $data = [
+                    'email' => $request->input('email'),
+                    'password' => bcrypt($request->input('password')), 
+                    'name' => $request->input('name'), 
+                    'MobileNumber' => $request->input('mob'), 
+                ];
+                DB::table('users')->insert($data);
+                return response()->json([
+                    'message' => 'Successfully Registerd'
+                ]);
+            }
+            
         }
 
     }

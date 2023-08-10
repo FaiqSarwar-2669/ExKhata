@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('usercalculation', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('login-user-id')->constrained('users');
+            $table->foreignId('login_user_id')->references('id')->on('users')->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->string('PhoneNumber');
             $table->string('Email')->nullable();
             $table->string('Name')->nullable();
@@ -21,8 +22,8 @@ return new class extends Migration
             $table->string('UserGive')->nullable();
             $table->string('profile_img')->nullable();
             $table->timestamps();
-
         });
+        
     }
 
     /**

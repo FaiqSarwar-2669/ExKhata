@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
+use App\Models\{User, UserCalculation};
+
 
 class AddUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
         //
@@ -30,8 +34,11 @@ class AddUserController extends Controller
      */
     public function store(Request $request)
     {
+        $customer=UserCalculation;
+
         $error=[];
         $validator = Validator::make($request->all(), [
+            'login_user_id' => 'required|exists:users,id',
             'mob' => 'required|max:11',
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email',
