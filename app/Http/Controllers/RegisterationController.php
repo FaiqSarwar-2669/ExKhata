@@ -37,7 +37,7 @@ class RegisterationController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'name' => 'required|string|max:255',
-            'mob' => 'required|nullable|digits:11'
+            'mob' => 'required|nullable|max:11'
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()])->setStatusCode(422);
@@ -94,7 +94,7 @@ class RegisterationController extends Controller
         $validator = Validator::make($request->all(), [
             'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'name' => 'string|max:255',
-            'MobileNumber' => 'nullable|digits:11'
+            'MobileNumber' => 'nullable|max:11'
         ]);
 
         if ($validator->fails()) {

@@ -22,6 +22,7 @@ Route::post('/user', [RegisterationController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/forgotPassword', [ForgotPasswordController::class,'sendResetLink']);
 Route::post('/addUser', [AddUserController::class,'store']);
+Route::post('/updateUser/{id}', [AddUserController::class,'update']);
 
 
 
