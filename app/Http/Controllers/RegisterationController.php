@@ -35,6 +35,8 @@ class RegisterationController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
+            'name' => 'required|string|max:255',
+            'mob' => 'required|nullable|digits:11'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors())->setStatusCode(422);
@@ -42,6 +44,8 @@ class RegisterationController extends Controller
             $data = [
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')), 
+                'name' => $request->input('name'), 
+                'MobileNumber' => $request->input('mob'), 
             ];
             DB::table('users')->insert($data);
             return response()->json([
@@ -142,7 +146,36 @@ class RegisterationController extends Controller
     }
 
 
-
+    public function changePaswword(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|email',
+            'password' => 'required',
+            'new_password' => 'required'
+        ]);
+        if($validator->fails())
+        {
+            return response()->json([
+                'message' => $validator->errors()
+            ],422);
+        }
+        try{
+            $user = User::where('email', $request->email)->first();
+            if($user && Hash::check($request->password, $user->password)){
+                $user->password = bcrypt($request->new_password);
+                $user->save();
+            }
+            return response()->json([
+                'message' => 'Your password Updated'
+            ],200);
+        }catch(\Exception $e)
+        {
+            return response()->json([
+                'message' => $e->errors()
+            ],422);
+        }
+        
+    }
 
     /**
      * Remove the specified resource from storage.

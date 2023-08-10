@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('usercalculation', function (Blueprint $table) {
             $table->id();
             $table->foreignId('login-user-id')->constrained('users');
-            $table->string('users-id');
-            $table->string('user-got')->nullable();
-            $table->string('user-give')->nullable();
+            $table->string('PhoneNumber');
+            $table->string('Email')->nullable();
+            $table->string('Name')->nullable();
+            $table->string('UserTake')->nullable();
+            $table->string('UserGive')->nullable();
+            $table->string('profile_img')->nullable();
             $table->timestamps();
+
         });
     }
 
